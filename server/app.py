@@ -5,6 +5,8 @@ import json
 from config import app, db, api, bcrypt
 from models import User, Item, Order
 import re
+import os
+from dotenv import load_dotenv
 
 
 
@@ -13,7 +15,7 @@ import re
 #     if not session.get('user_id'):
 #         return {'error': 'Unauthorized, Please log in'}, 401
 
-
+load_dotenv()
 class HomePage(Resource):
     def get(self):
         return {'message': '200: Welcome to our Home Page'}, 200
@@ -307,7 +309,7 @@ def calculate_order_amount(cart_items):
         total_amount += item.item_count * item.item.price
     return int(total_amount * 100)
 
-stripe.api_key = 'sk_test_51MzBCeHMeLOzkmO2brW3gQ3hOO9P9tOSTK9u5p6uZgQdngTeOT76iCtUbN3zQ8R3NneVuIbVQaoVmEs7JNPIaFl800L0j5ysWq'
+stripe.api_key = os.getenv('STRIPE_API_KEY')
 YOUR_DOMAIN = 'http://localhost:3000'
 
 @app.route('/create-checkout-session', methods=['POST'])
